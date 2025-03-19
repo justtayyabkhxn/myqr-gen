@@ -1,10 +1,12 @@
 "use client";
 import "./globals.css";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [input, setInput] = useState("");
   const [qrCode, setQrCode] = useState("");
+  const router = useRouter();
 
   const generateQrCode = async () => {
     if (!input) return alert("Enter some text!");
@@ -49,6 +51,12 @@ export default function Home() {
         >
           Generate QR Code
         </button>
+        <button
+          onClick={() => router.push("/login")}
+          className="w-full mt-3 bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition"
+        >
+          Customize QR Code
+        </button>
 
         {qrCode && (
           <div className="mt-6 text-center">
@@ -73,7 +81,7 @@ export default function Home() {
           </div>
           <div className="p-4 bg-gray-800 shadow rounded-lg">
             <h3 className="text-lg font-semibold">Customizable</h3>
-            <p className="text-gray-400 text-sm">Modify colors, sizes, and more (coming soon).</p>
+            <p className="text-gray-400 text-sm">Modify colors, sizes, and more (Login Required).</p>
           </div>
           <div className="p-4 bg-gray-800 shadow rounded-lg">
             <h3 className="text-lg font-semibold">Secure</h3>
