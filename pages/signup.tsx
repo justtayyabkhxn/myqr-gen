@@ -16,7 +16,7 @@ export default function Signup() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleChange = (e: any) => {
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
