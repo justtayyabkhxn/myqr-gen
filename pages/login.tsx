@@ -21,9 +21,9 @@ export default function LoginPage() {
       {/* Home Button */}
       <button 
         onClick={() => router.push("/")}
-        className="absolute top-6 left-6 bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-600 transition"
+        className="absolute top-6 left-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition font-bold"
       >
-        Home
+        Generate QR
       </button>
       
       {/* Login Form */}
@@ -59,7 +59,7 @@ export default function LoginPage() {
           
           <button
             type="submit"
-            className="w-full bg-blue-500 py-3 rounded text-white hover:bg-blue-600 transition"
+            className="w-full bg-blue-500 py-3 rounded text-white hover:bg-blue-600 transition font-bold text-lg"
           >
             Login
           </button>
@@ -67,7 +67,7 @@ export default function LoginPage() {
         
         <div className="mt-4 flex justify-between text-sm text-gray-400 cursor-pointer">
           <button onClick={() => router.push("/forgot-password")} className="hover:underline cursor-pointer">Forgot Password?</button>
-          <button onClick={() => router.push("/signup")} className="hover:underline cursor-pointer">Sign Up</button>
+          <button onClick={() => router.push("/signup")} className="text-blue-400 cursor-pointer hover:underline">Sign Up</button>
         </div>
       </div>
     </div>
