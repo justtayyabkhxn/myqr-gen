@@ -35,6 +35,15 @@ export default function Home() {
     document.body.removeChild(link);
   };
 
+  const handleCustomizeClick = () => {
+    const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      router.push("/customize-qr");
+    } else {
+      router.push("/login");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
       <header className="text-center my-8">
@@ -53,13 +62,13 @@ export default function Home() {
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
         <button
           onClick={generateQrCode}
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition font-bold"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition font-bold cursor-pointer"
         >
           Generate QR Code
         </button>
         <button
-          onClick={() => router.push("/login")}
-          className="w-full mt-3 bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition font-bold"
+          onClick={handleCustomizeClick}
+          className="w-full mt-3 bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition font-bold cursor-pointer"
         >
           Customize QR Code
         </button>
