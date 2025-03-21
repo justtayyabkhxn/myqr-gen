@@ -23,6 +23,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, message: "Signup successful!" });
   } catch (error) {
+    console.error("Signup Error:", error); // ✅ Logs the error for debugging
     return NextResponse.json({ error: "Something went wrong!" }, { status: 500 });
   }
 }

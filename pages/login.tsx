@@ -19,7 +19,7 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: any) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -37,7 +37,7 @@ export default function LoginPage() {
   
       localStorage.setItem("token", data.token);
       setSuccess("Login successful! Redirecting...");
-      setTimeout(() => router.push("/customise-qr"), 2000);
+      setTimeout(() => router.push("/customize-qr"), 2000);
     } catch (error: any) {
       setError(error.message);
     }

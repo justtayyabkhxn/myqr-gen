@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import  connectDB  from "../../../../lib/connectDB";
+import connectDB from "../../../../lib/connectDB";
 import User from "../../../../lib/User";
 
 export async function POST(req: Request) {
@@ -30,6 +30,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "Login successful!", token }, { status: 200 });
   } catch (error) {
+    console.error("Login Error:", error); // ✅ Logs the error for debugging
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

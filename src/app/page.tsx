@@ -2,11 +2,12 @@
 import "./globals.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Home() {
-  const [input, setInput] = useState("");
-  const [qrCode, setQrCode] = useState("");
-  const [error, setError] = useState("");
+  const [input, setInput] = useState<string>("");
+  const [qrCode, setQrCode] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const router = useRouter();
 
   const generateQrCode = async () => {
@@ -16,17 +17,27 @@ export default function Home() {
     }
     setError("");
 
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: input }),
-    });
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: input }),
+      });
 
-    const result = await response.json();
-    setQrCode(result.imageUrl);
+      if (!response.ok) {
+        throw new Error("Failed to generate QR code.");
+      }
+
+      const result = await response.json();
+      setQrCode(result.imageUrl);
+    } catch (err) {
+      setError("Something went wrong! Please try again.");
+      console.error("QR Code Generation Error:", err);
+    }
   };
 
   const downloadQrCode = () => {
+    if (!qrCode) return;
     const link = document.createElement("a");
     link.href = qrCode;
     link.download = "qr-code.png";
@@ -37,11 +48,7 @@ export default function Home() {
 
   const handleCustomizeClick = () => {
     const userToken = localStorage.getItem("userToken");
-    if (userToken) {
-      router.push("/customize-qr");
-    } else {
-      router.push("/login");
-    }
+    router.push(userToken ? "/customize-qr" : "/login");
   };
 
   return (
@@ -75,10 +82,12 @@ export default function Home() {
 
         {qrCode && (
           <div className="mt-6 text-center">
-            <img
+            <Image
               src={qrCode}
               alt="Generated QR Code"
-              className="w-40 h-40 mx-auto border border-gray-600 rounded"
+              width={160}
+              height={160}
+              className="mx-auto border border-gray-600 rounded"
             />
             <button
               onClick={downloadQrCode}
@@ -124,7 +133,7 @@ export default function Home() {
           <a
             href="https://justtayyabkhan.vercel.app"
             target="_blank"
-            className="text-orange-400 cursor-pointer hover:underline"
+            className="text-orange-400 cursor-pointer hover:underline font-bold"
           >
             Tayyab Khan
           </a>

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
 import "../src/app/globals.css";
 
-
 export default function CustomiseQR() {
   const router = useRouter();
   const [qrData, setQrData] = useState("");
@@ -12,10 +11,10 @@ export default function CustomiseQR() {
   const [fgColor, setFgColor] = useState("#000000");
   const [pixelColor, setPixelColor] = useState("#000000");
   const [logo, setLogo] = useState<string | null>(null);
-  const [qrSize, setQrSize] = useState(256);
-  
+  const [qrSize, setQrSize] = useState(256); // Default size: 256px
+
   // Function to handle image upload
-  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = (event: any) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -30,6 +29,7 @@ export default function CustomiseQR() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
       <h1 className="text-3xl font-bold mb-4">Customize Your QR Code</h1>
 
+      {/* Input Field */}
       <input
         type="text"
         placeholder="Enter text or URL"
@@ -38,8 +38,8 @@ export default function CustomiseQR() {
         className="w-full max-w-md p-2 border border-gray-600 rounded bg-gray-700 text-white mb-4"
       />
 
+      {/* Color Pickers */}
       <div className="flex flex-wrap justify-center gap-4">
-        {/* Color Pickers */}
         <div>
           <label className="block text-sm">Background</label>
           <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} />
@@ -52,6 +52,19 @@ export default function CustomiseQR() {
           <label className="block text-sm">Pixels</label>
           <input type="color" value={pixelColor} onChange={(e) => setPixelColor(e.target.value)} />
         </div>
+      </div>
+
+      {/* QR Size Adjuster */}
+      <div className="mt-4">
+        <label className="block text-sm">QR Code Size ({qrSize}px)</label>
+        <input
+          type="range"
+          min="100"
+          max="500"
+          value={qrSize}
+          onChange={(e) => setQrSize(Number(e.target.value))}
+          className="w-full max-w-md mt-1"
+        />
       </div>
 
       {/* Logo Upload */}
