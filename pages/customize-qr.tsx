@@ -14,7 +14,7 @@ export default function CustomiseQR() {
   const [qrSize, setQrSize] = useState(256); // Default size: 256px
 
   // Function to handle image upload
-  const handleLogoUpload = (event: any) => {
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();

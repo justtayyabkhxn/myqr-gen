@@ -8,24 +8,38 @@ if (!MONGODB_URL) {
 
 // Extend global object safely for TypeScript
 declare global {
-  var mongooseGlobal: {
-    conn: mongoose.Connection | null;
-    promise: Promise<mongoose.Connection> | null;
-  };
+  namespace NodeJS {
+    interface Global {
+      mongooseGlobal?: {
+        conn: mongoose.Connection | null;
+        promise: Promise<mongoose.Connection> | null;
+      };
+    }
+  }
 }
 
 // Ensure global object exists
-global.mongooseGlobal = global.mongooseGlobal || { conn: null, promise: null };
+const globalWithMongoose = global as typeof global & {
+  mongooseGlobal: {
+    conn: mongoose.Connection | null;
+    promise: Promise<mongoose.Connection> | null;
+  };
+};
+
+// Ensure mongooseGlobal is always initialized
+if (!globalWithMongoose.mongooseGlobal) {
+  globalWithMongoose.mongooseGlobal = { conn: null, promise: null };
+}
 
 async function connectDB(): Promise<mongoose.Connection> {
-  if (global.mongooseGlobal.conn) {
+  if (globalWithMongoose.mongooseGlobal.conn) {
     console.log("Using existing MongoDB connection.");
-    return global.mongooseGlobal.conn;
+    return globalWithMongoose.mongooseGlobal.conn;
   }
 
-  if (!global.mongooseGlobal.promise) {
+  if (!globalWithMongoose.mongooseGlobal.promise) {
     console.log("Creating new MongoDB connection...");
-    global.mongooseGlobal.promise = mongoose
+    globalWithMongoose.mongooseGlobal.promise = mongoose
       .connect(MONGODB_URL, {
         serverSelectionTimeoutMS: 5000, // Set timeout
       })
@@ -39,8 +53,9 @@ async function connectDB(): Promise<mongoose.Connection> {
       });
   }
 
-  global.mongooseGlobal.conn = await global.mongooseGlobal.promise;
-  return global.mongooseGlobal.conn;
+  globalWithMongoose.mongooseGlobal.conn =
+    await globalWithMongoose.mongooseGlobal.promise;
+  return globalWithMongoose.mongooseGlobal.conn;
 }
 
 export default connectDB;
